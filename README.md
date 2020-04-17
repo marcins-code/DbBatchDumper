@@ -49,3 +49,8 @@ $mysql->makeDumpMyDbList()
 $postgresql->setMyDBList(['db1', 'db2']);
 $postgresql->makeDumpMyDbList()
 ```
+---
+### Output
+In folder defined in method `setTargetDirectory` will be created new folder with database type and date/time of dump making and inside compressed achives of   databases.
+
+![20200411_185456](img/folders.jpg)
