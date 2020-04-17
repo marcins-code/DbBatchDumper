@@ -1,1 +1,1 @@
-#Batch Mysql and PostrgreSQL dumper
+## Batch Mysql and PostrgreSQL dumper
