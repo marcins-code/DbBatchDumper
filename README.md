@@ -57,7 +57,7 @@ In folder defined in method `setTargetDirectory` will be created new folder with
 
 ---
 ### Archives handling 
-In order to keep archives only for specific period of time use method `keepArchiveNotOlderThan()` like:
+In order to keep archives only for specific period of time use method `keepArchiveNotOlderThan('period')` like:
 ```php
 //example for MySQL
 $mysql->keepArchiveNotOlderThan('14 days');
