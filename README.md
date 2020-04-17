@@ -25,17 +25,27 @@ $postgresql->setConnectionData("pgsql:dbname=db_name;host=host", 'user', 'passwo
 1. Dump all databases include system.
 ```php
 //example for MySQL
-$mysql->makeDumpWithSystem()
+$mysql->makeDumpWithSystem();
 
 //example for PostgreSQL
-$postgresql->makeDumpWithSystem()
+$postgresql->makeDumpWithSystem();
 ```
 
 2. Dump all databases without system.
 ```php
 //example for MySQL
-$mysql->makeDumpWithoutSystem()
+$mysql->makeDumpWithoutSystem();
 
 //example for PostgreSQL
 $postgresql->makeDumpWithoutSystem();
+```
+3. Custom list of databases
+```php
+//example for MySQL
+$mysql->setMyDBList(['db1', 'db2']);
+$mysql->makeDumpMyDbList()
+
+//example for PostgreSQL
+$postgresql->setMyDBList(['db1', 'db2']);
+$postgresql->makeDumpMyDbList()
 ```
