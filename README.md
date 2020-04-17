@@ -3,7 +3,6 @@
 This class creates dump archives for MySQL and PostgreSQL databases. You can create dumps for all databases including system, without system databases or own specific database list.
 
 ### Setup
-
 ```php
 include ('src/DataBasesDumper.php');
 
@@ -18,4 +17,25 @@ $postgresql= new DataBasesDumper();
 $postgresql->setDbType('postgresql');
 $postgresql->setTargetDirectory('path_to_archive_folder');
 $postgresql->setConnectionData("pgsql:dbname=db_name;host=host", 'user', 'password' );
+```
+------
+
+### Create databases dump
+
+1. Dump all databases include system.
+```php
+//example for MySQL
+$mysql->makeDumpWithSystem()
+
+//example for PostgreSQL
+$postgresql->makeDumpWithSystem()
+```
+
+2. Dump all databases without system.
+```php
+//example for MySQL
+$mysql->makeDumpWithoutSystem()
+
+//example for PostgreSQL
+$postgresql->makeDumpWithoutSystem();
 ```
