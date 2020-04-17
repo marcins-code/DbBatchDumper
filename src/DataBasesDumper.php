@@ -1,8 +1,11 @@
 <?php
 
+include ('archiveHandler.php');
 
 class DataBasesDumper
 {
+
+    use archiveHandler;
 
     /**
      * @var string
@@ -40,6 +43,11 @@ class DataBasesDumper
     private $systemPostgreSQL = ['postgres'];
 
     /**
+     * @var array
+     */
+    protected $myDBList;
+
+    /**
      * @var string
      */
     private $subDirPrefix;
@@ -57,7 +65,7 @@ class DataBasesDumper
 
     public function __construct()
     {
-        $this->subDirPrefix = '-dump-' . date('Y_m_d_H_i_s');
+        $this->subDirPrefix = '-dump-' .date_create('now')->format('Y-m-d-H-i-s');
 
     }
 
@@ -114,6 +122,24 @@ class DataBasesDumper
 
 
     /**
+     * @return array
+     */
+    public function getMyDBList():array
+    {
+        return $this->myDBList;
+    }
+
+
+    /**
+     * @param array $myDBList
+     */
+    public function setMyDBList(array $myDBList): void
+    {
+        $this->myDBList = $myDBList;
+    }
+
+
+    /**
      * Pobranie wszystkich baz danych
      * @return array
      */
@@ -135,11 +161,12 @@ class DataBasesDumper
      * @return array
      */
     private function getOnlyNonSystemDBs()
-    {    if ('mysql' === $this->dbType) {
-        return array_diff($this->getAllDatabases(), $this->systemDBMySQL);
-    }
+    {
+        if ('mysql' === $this->dbType) {
+            return array_diff($this->getAllDatabases(), $this->systemDBMySQL);
+        }
 
-        return  array_diff($this->getAllDatabases(), $this->systemPostgreSQL);
+        return array_diff($this->getAllDatabases(), $this->systemPostgreSQL);
 
     }
 
@@ -149,11 +176,11 @@ class DataBasesDumper
      * @param $array
      * @return string
      */
-    private function prepareDump($array):string
+    private function prepareDump($array): string
     {
         $fullDir = $this->targetDirectory . '/' . $this->dbType . $this->subDirPrefix;
         mkdir($fullDir, 0775);
-        $fullDir=str_replace(' ', '\ ', $fullDir);// "escape" dla nazw katalogów ze spacja
+        $fullDir = str_replace(' ', '\ ', $fullDir);// "escape" dla nazw katalogów ze spacja
 
         foreach ($array as $sigleDB) {
             if ('mysql' === $this->dbType) {
@@ -187,44 +214,13 @@ class DataBasesDumper
     }
 
 
-    /**
-     * Usunięcie archiwuw starszych niz zadane
-     * @param string $howOld
-     */
-    public function keepArchiveNotOlderThan(string $howOld)
-
+    public function makeDumpMyDbList()
     {
-        $fileList = new \DirectoryIterator($this->targetDirectory);
-        if ($fileList) {
-            foreach ($fileList as $file) {
-
-                if ($file->isDir() && preg_match('/dump/', $file->getFilename()) && ($file->getMTime() < (date(strtotime('-' . $howOld))))) {
-
-                    self::removeAllFromDir($this->targetDirectory . '/' . $file);
-
-                }
-            }
-        }
+//        if (! $this->myDBList) {
+//            throw new Exception('Empty myDBList array .');
+//        }
+        return $this->prepareDump($this->getMyDBList());
     }
 
-
-    /**
-     * Usuwanie wszystkich elementów z katalogu
-     * @param $dir
-     */
-    private static function removeAllFromDir($dir)
-    {
-        $dirContent= glob($dir . '/*');
-        foreach ($dirContent as $content) {
-            if (is_file($content)) {
-                unlink($content);
-            }
-
-            if (is_dir($content)) {
-                self::removeAllFromDir($content);
-            }
-        }
-        rmdir($dir);
-    }
 }
 
