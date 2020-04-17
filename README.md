@@ -54,3 +54,14 @@ $postgresql->makeDumpMyDbList()
 In folder defined in method `setTargetDirectory` will be created new folder with database type and date/time of dump making and inside compressed achives of   databases.
 
 ![20200411_185456](img/folders.jpg)
+
+---
+### Archives handling 
+In order to keep archives only for specific period of time use method `keepArchiveNotOlderThan()` like:
+```php
+//example for MySQL
+$mysql->keepArchiveNotOlderThan('14 days');
+
+//example for PostgreSQL
+$postgresql->makeDumpWithSystem('6 months');
+```
