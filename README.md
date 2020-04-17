@@ -63,5 +63,9 @@ In order to keep archives only for specific period of time use method `keepArchi
 $mysql->keepArchiveNotOlderThan('14 days');
 
 //example for PostgreSQL
-$postgresql->makeDumpWithSystem('6 months');
+$postgresql->keepArchiveNotOlderThan('6 months');
 ```
+
+---
+### Notice
+Class require symlinks for `mysqldump` and/or `pg_dump` in folder `/usr/local/bin/`
